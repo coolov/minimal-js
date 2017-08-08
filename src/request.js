@@ -11,7 +11,11 @@ export default async function githubGQL(query, variables = {}, token) {
     method: "POST",
     body
   });
-  const json = await res.json();
+  const { data, errors } = await res.json();
 
-  return json;
+  if (errors) {
+    throw new Error(JSON.stringify(errors));
+  }
+
+  return data;
 }

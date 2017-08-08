@@ -6,15 +6,12 @@ import {
 
 import request from './request.js';
 import Form from './form.js';
+import { Dashboard, dashboardFragments } from './dashboard.js';
 
 class App extends Component {
   constructor(props) {
     super(props);
     const token = localStorage.getItem('token');
-
-    if (token) {
-      this.fetch(token);
-    }
 
     this.state = {
       variables: {
@@ -24,23 +21,20 @@ class App extends Component {
       fetching: !!token,
       token: null
     };
+
+    if (token) {
+      this.fetch(token);
+    }
   }
 
   async fetch(token) {
     this.setState({ fetching: true });
     try {
-      const data = await request(
-        `query latestRelease ($owner: String!, $name: String!) {
+      const data = await request(`
+        ${dashboardFragments.prFields}
+        query prs ($owner: String!, $name: String!) {
           repository(owner: $owner, name: $name) {
-            releases(last: 20) {
-              edges {
-                node {
-                  tag {
-                    name
-                  }
-                }
-              }
-            }
+            ...prFields
           }
         }`,
         this.state.variables,
@@ -53,7 +47,7 @@ class App extends Component {
     }
   }
 
-  onClick({ token }) {
+  onSignIn({ token }) {
     if (token) {
       this.fetch(token);
     }
@@ -64,13 +58,12 @@ class App extends Component {
       return h('div', {}, 'Loading...');
     }
     if (state.signedIn) {
-      return h('div', {}, 'You Are In!');
+      return h(Dashboard, this.state.data.repository );
     }
-
     // Show sign-in form
     return (
 			h('div', {id:'app'},
-        h(Form, { onClick: this.onClick.bind(this) })
+        h(Form, { onSignIn: this.onClick.bind(this) })
 				//h('h1', null, 'App'),
 			)
 		);
