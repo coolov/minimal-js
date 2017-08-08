@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "start": "cd src && python -m SimpleHTTPServer",
+    "postinstall": "cp node_modules/preact/dist/preact.esm.js src/preact.esm.js && cp node_modules/preact/dist/preact.esm.js.map src/preact.esm.js.map"
+  },
+  "dependencies": {
+    "preact": "^8.2.1"
+  }
+}
