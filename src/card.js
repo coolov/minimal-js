@@ -1,7 +1,13 @@
 import { Component, h } from './preact.esm.js';
 
+const style = {
+  backgroundColor: '#CCC',
+  padding: 10,
+  fontSize: 25
+}
+
 const Card = ({ title }) => {
-  return h('div', {}, title);
+  return h('div', { style }, title);
 }
 
 const cardFragments = {

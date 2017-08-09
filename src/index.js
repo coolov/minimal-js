@@ -63,7 +63,7 @@ class App extends Component {
     // Show sign-in form
     return (
 			h('div', {id:'app'},
-        h(Form, { onSignIn: this.onClick.bind(this) })
+        h(Form, { onSignIn: this.onSignIn.bind(this) })
 				//h('h1', null, 'App'),
 			)
 		);
